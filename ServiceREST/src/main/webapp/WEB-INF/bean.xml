@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<bean id="documentsService" class="by.epamlab.DocumentsService" />
+
+
+	<jaxrs:server id="documents" address="/ServiceREST"
+		docLocation="wsdl">
+		<jaxrs:serviceBeans>
+			<ref bean="documentsService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+			<bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider" />
+
+			<bean id="documentNotFound" class="by.epamlab.exception.ElementNotFoundException" />
+			<bean id="customInternalServerError" class="by.epamlab.exception.CustomInternalServerError" />
+
+		</jaxrs:providers>
+	</jaxrs:server>
+
+</beans>
